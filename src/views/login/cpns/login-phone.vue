@@ -1,6 +1,11 @@
 <template>
     <div class="login-phone">
-        <el-form label-width="70px" :rules="rulesPhone" :model="phone">
+        <el-form
+            label-width="70px"
+            :rules="rulesPhone"
+            :model="phone"
+            ref="formRefs"
+        >
             <el-form-item label="手机号" prop="number">
                 <el-input v-model="phone.number"></el-input>
             </el-form-item>
@@ -17,7 +22,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { ElForm } from 'element-plus'
+import { defineComponent, reactive, ref } from 'vue'
 import { rulesPhone } from '../config/account-config'
 export default defineComponent({
     components: {},
@@ -26,7 +32,21 @@ export default defineComponent({
             number: '',
             code: ''
         })
-        return { phone, rulesPhone }
+
+        const formRefs = ref<InstanceType<typeof ElForm>>()
+
+        const loginActives = () => {
+            // console.log('手机')
+            // 验证操作,会返回一个布尔，判断是否验证通过，element自带
+            formRefs.value?.validate((valid) => {
+                // 如果为true执行登录逻辑
+                if (valid) {
+                    // console.log('手机号成功登陆啦～')
+                }
+            })
+        }
+
+        return { phone, rulesPhone, formRefs, loginActives }
     }
 })
 </script>

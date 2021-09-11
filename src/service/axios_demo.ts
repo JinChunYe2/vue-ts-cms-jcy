@@ -89,7 +89,7 @@ axios.interceptors.request.use(
         // 想做的一些操作
         // 1.给请求添加token
         // 2.isLoading动画
-        console.log('请求成功的拦截')
+        // console.log('请求成功的拦截')
         return config
     },
     (err) => {
@@ -101,7 +101,7 @@ axios.interceptors.request.use(
 // fn1: 数据响应成功(服务器正常的返回了数据 20x)
 axios.interceptors.response.use(
     (res) => {
-        console.log('响应成功的拦截')
+        // console.log('响应成功的拦截')
         return res
     },
     (err) => {

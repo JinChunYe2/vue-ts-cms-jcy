@@ -93,7 +93,7 @@ export default defineComponent({
             font-weight: 700;
             color: white;
             line-height: 100%;
-            display: none;
+            display: block;
         }
     }
 

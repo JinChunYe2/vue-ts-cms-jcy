@@ -26,7 +26,10 @@
                             v-for="subitem in item.children"
                             :key="subitem.id"
                         >
-                            <el-menu-item :index="subitem.id + ''">
+                            <el-menu-item
+                                :index="subitem.id + ''"
+                                @click="handleMenuItemClick(subitem)"
+                            >
                                 <i
                                     v-if="subitem.icon"
                                     :class="subitem.icon"
@@ -52,6 +55,7 @@
 import { defineComponent, computed } from 'vue'
 // 获取useStore类型的思路 => 1.store里创建方法，方法里面写入在types.ts里创建的联合类型（包含login的）
 import { useStore } from '@/store'
+import { useRouter } from 'vue-router'
 export default defineComponent({
     components: {},
     props: {
@@ -63,8 +67,17 @@ export default defineComponent({
     setup() {
         const store = useStore()
         const userMenus = computed(() => store.state.login.userMenus)
+        const router = useRouter()
+
+        const handleMenuItemClick = (item: any) => {
+            console.log('--------', item)
+            router.push({
+                path: item.url ?? '/not-found'
+            })
+        }
         return {
-            userMenus
+            userMenus,
+            handleMenuItemClick
         }
     }
 })

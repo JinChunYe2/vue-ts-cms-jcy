@@ -1,5 +1,8 @@
 // 首先，我们先引入router里面的路由类型，作为返回值
+import { IBreadcrumb } from '@/base-ui/breadcrumb'
 import { RouteRecordRaw } from 'vue-router'
+
+let firstMenu: any = null
 
 // 然后我们在导出我们要输出的分类路由
 export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
@@ -16,8 +19,6 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
         allRoutes.push(route.default)
     })
 
-    console.log(allRoutes, 'routeFiles')
-
     // 2.根据菜单获取需要添加的routes
     const _recurseGetRoute = (menus: any[]) => {
         for (const menu of menus) {
@@ -26,6 +27,9 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
                     return route.path === menu.url
                 })
                 if (route) routes.push(route)
+                if (!firstMenu) {
+                    firstMenu = menu
+                }
             } else {
                 _recurseGetRoute(menu.children)
             }
@@ -36,3 +40,32 @@ export function mapMenusToRoutes(userMenus: any[]): RouteRecordRaw[] {
 
     return routes
 }
+
+// 导出当前的面包屑
+export function pathMapBreadcrumbs(userMenus: any[], currentPath: string) {
+    const breadcrumbs: IBreadcrumb[] = []
+    pathMapToMenu(userMenus, currentPath, breadcrumbs)
+    return breadcrumbs
+}
+
+// 跟踪当前菜单
+export function pathMapToMenu(
+    userMenus: any[],
+    currentPath: string,
+    breadcrumbs?: IBreadcrumb[]
+): any {
+    for (const menu of userMenus) {
+        if (menu.type === 1) {
+            const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+            if (findMenu) {
+                breadcrumbs?.push({ name: menu.name })
+                breadcrumbs?.push({ name: findMenu.name })
+                return findMenu
+            }
+        } else if (menu.type === 2 && menu.url === currentPath) {
+            return menu
+        }
+    }
+}
+
+export { firstMenu }

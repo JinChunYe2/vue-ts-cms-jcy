@@ -11,6 +11,6 @@ import './assets/css/index.less'
 
 const app = createApp(App)
 
-app.use(router).use(vuex).use(ElementPlus).mount('#app')
-
 setupStore()
+
+app.use(router).use(vuex).use(ElementPlus).mount('#app')

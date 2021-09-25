@@ -5,7 +5,7 @@
             <span v-if="!isCollapse" class="title">Vue3 + TS</span>
         </div>
         <el-menu
-            default-active="2"
+            :default-active="defaultValue"
             :collapse="isCollapse"
             class="el-menu-vertical"
             background-color="#0c2135"
@@ -52,10 +52,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 // 获取useStore类型的思路 => 1.store里创建方法，方法里面写入在types.ts里创建的联合类型（包含login的）
 import { useStore } from '@/store'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+
+import { pathMapToMenu } from '@/utils/map-menus'
 export default defineComponent({
     components: {},
     props: {
@@ -65,9 +67,18 @@ export default defineComponent({
         }
     },
     setup() {
+        // store
         const store = useStore()
         const userMenus = computed(() => store.state.login.userMenus)
+
+        // router
         const router = useRouter()
+        const route = useRoute()
+        const currentPath = route.path
+
+        // data
+        const menu = pathMapToMenu(userMenus.value, currentPath)
+        const defaultValue = ref(menu.id + '')
 
         const handleMenuItemClick = (item: any) => {
             console.log('--------', item)
@@ -76,6 +87,7 @@ export default defineComponent({
             })
         }
         return {
+            defaultValue,
             userMenus,
             handleMenuItemClick
         }

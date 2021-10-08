@@ -18,7 +18,7 @@
 import { defineComponent, ref, computed } from 'vue'
 import { useStore } from '@/store'
 import { useRoute } from 'vue-router'
-import HyBreadCrumb, { IBreadcrumb } from '@/base-ui/breadcrumb/index'
+import HyBreadCrumb from '@/base-ui/breadcrumb/index'
 import userInfo from './user-info.vue'
 
 import { pathMapBreadcrumbs } from '@/utils/map-menus'

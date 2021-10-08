@@ -3,13 +3,37 @@
         <page-search :searchFormConfig="searchFormConfig" />
     </div>
     <div class="content">
-        <hy-table :listData="userList" :propList="propList">
+        <hy-table
+            :listData="userList"
+            :propList="propList"
+            :showIndexColumn="showIndexColumn"
+            :showSelectColumn="showSelectColumn"
+        >
             <template #status="scope">
-                <el-button>{{ scope.row.enable ? '启用' : '禁用' }}</el-button>
+                <el-button
+                    plain
+                    size="mini"
+                    :type="scope.row.enable ? 'success' : 'danger'"
+                >
+                    {{ scope.row.enable ? '启用' : '禁用' }}
+                </el-button>
             </template>
             <!-- scope返回的值是slot标签上返回的所有属性值 -->
             <template #createAt="scope">
-                <strong>{{ scope.row.createAt }}</strong>
+                <span>{{ $filters.formatTime(scope.row.createAt) }}</span>
+            </template>
+            <template #updateAt="scope">
+                <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
+            </template>
+            <template #handler>
+                <div class="handle-btns">
+                    <el-button size="mini" type="text" icon="el-icon-edit">
+                        编辑
+                    </el-button>
+                    <el-button size="mini" type="text" icon="el-icon-delete">
+                        删除
+                    </el-button>
+                </div>
             </template>
         </hy-table>
     </div>
@@ -64,9 +88,19 @@ export default defineComponent({
                 label: '更新时间',
                 minWidth: '250',
                 slotname: 'updateAt'
-            }
+            },
+            { label: '操作', minWidth: '120', slotname: 'handler' }
         ]
-        return { searchFormConfig, userList, userCount, propList }
+        const showIndexColumn = true
+        const showSelectColumn = true
+        return {
+            searchFormConfig,
+            userList,
+            userCount,
+            propList,
+            showIndexColumn,
+            showSelectColumn
+        }
     }
 })
 </script>

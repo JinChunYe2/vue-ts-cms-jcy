@@ -48,13 +48,17 @@ export default defineComponent({
         contentTableConfig: {
             type: Object,
             redirect: true
+        },
+        pageName: {
+            type: String,
+            redirect: true
         }
     },
     components: { HyTable },
-    setup() {
+    setup(prop) {
         const store = useStore()
         store.dispatch('system/getPageListAction', {
-            pageUrl: '/users/list',
+            pageName: prop.pageName,
             queryInfo: {
                 offset: 0,
                 size: 10

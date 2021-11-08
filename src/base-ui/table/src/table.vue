@@ -12,6 +12,7 @@
             border
             style="width: 100%"
             @selection-change="handleSelectionChange"
+            v-bind="childrenProps"
         >
             <!-- 是否选中 -->
             <el-table-column
@@ -35,6 +36,7 @@
                     :label="propItem.label"
                     :min-width="propItem.minWidth"
                     align="center"
+                    show-overflow-tooltip
                 >
                     <!-- scope返回的值是slot标签上返回的所有属性值 -->
                     <template #default="scope">
@@ -46,16 +48,16 @@
                 </el-table-column>
             </template>
         </el-table>
-        <div class="footer">
+        <div class="footer" v-if="showFooter">
             <slot name="footer">
                 <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="currentPage4"
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
+                    :current-page="page.currentPage"
+                    :page-sizes="[10, 20, 30]"
+                    :page-size="page.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="400"
+                    :total="listCount"
                 ></el-pagination>
             </slot>
         </div>
@@ -75,6 +77,10 @@ export default defineComponent({
             type: Array,
             required: true
         },
+        listCount: {
+            type: Number,
+            default: 0
+        },
         propList: {
             type: Array,
             required: true
@@ -87,15 +93,37 @@ export default defineComponent({
         showSelectColumn: {
             type: Boolean,
             default: false
+        },
+        page: {
+            type: Object,
+            default: () => ({ currentPage: 0, pageSize: 10 })
+        },
+        childrenProps: {
+            type: Object,
+            default: () => ({})
+        },
+        showFooter: {
+            type: Boolean,
+            default: true
         }
     },
-    emits: ['selectionChange'],
+    emits: ['selectionChange', 'update:page'],
     setup(props, { emit }) {
         const handleSelectionChange = (value: any) => {
             console.log(value)
             emit('selectionChange', value)
         }
-        return { handleSelectionChange }
+        const handleSizeChange = (pageSize: number) => {
+            console.log('ceshi')
+            emit('update:page', {
+                ...props.page,
+                pageSize
+            })
+        }
+        const handleCurrentChange = (currentPage: number) => {
+            emit('update:page', { ...props.page, currentPage })
+        }
+        return { handleSelectionChange, handleSizeChange, handleCurrentChange }
     }
 })
 </script>

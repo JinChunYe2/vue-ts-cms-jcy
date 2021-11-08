@@ -2,13 +2,24 @@
 // import { Icontent } from '@/base-ui/form'
 
 export const contentTableConfig: any = {
-    title: '用户列表',
+    title: '商品列表',
     propList: [
-        { prop: 'name', label: '用户名', minWidth: '100' },
-        { prop: 'realname', label: '真实姓名', minWidth: '100' },
-        { prop: 'cellphone', label: '手机号码', minWidth: '100' },
+        { prop: 'name', label: '商品名称', minWidth: '100' },
         {
-            prop: 'enable',
+            prop: 'oldPrice',
+            label: '原价格',
+            minWidth: '100',
+            slotname: 'oldprice'
+        },
+        { prop: 'newPrice', label: '现价格', minWidth: '100' },
+        {
+            prop: 'imgUrl',
+            label: '商品图片',
+            minWidth: '100',
+            slotname: 'image'
+        },
+        {
+            prop: 'status',
             label: '状态',
             minWidth: '100',
             slotname: 'status'
@@ -29,5 +40,5 @@ export const contentTableConfig: any = {
     ],
     showIndexColumn: true,
     showSelectColumn: true,
-    newtitle: '新建数据'
+    newtitle: '添加商品'
 }

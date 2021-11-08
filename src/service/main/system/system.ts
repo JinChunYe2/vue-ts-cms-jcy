@@ -8,3 +8,10 @@ export function getPageListData(url: string, querInfo: any) {
         data: querInfo
     })
 }
+
+// url: /users/id
+export function deletePageData(url: string) {
+    return hyRequest.delete<IDataType>({
+        url: url
+    })
+}

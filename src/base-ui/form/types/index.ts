@@ -9,11 +9,12 @@ export interface IFormItem {
     options?: any[]
     // 针对特殊属性
     otherOptions?: any
+    isHidden?: boolean
 }
 
 export interface IForm {
     formItems: IFormItem[]
     labelWidth?: string
-    itemStyle: any
-    colLayout?: number
+    itemStyle?: any
+    colLayout?: any
 }

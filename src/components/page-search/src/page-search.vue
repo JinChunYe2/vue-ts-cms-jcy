@@ -7,8 +7,14 @@
             </template>
             <template #footer>
                 <div class="handle-btns">
-                    <el-button icon="el-icon-refresh">重置</el-button>
-                    <el-button type="primary" icon="el-icon-search">
+                    <el-button icon="el-icon-refresh" @click="handleRestClick">
+                        重置
+                    </el-button>
+                    <el-button
+                        type="primary"
+                        icon="el-icon-search"
+                        @click="handleQueryClick()"
+                    >
                         搜索
                     </el-button>
                 </div>
@@ -28,16 +34,39 @@ export default defineComponent({
             reuqired: true
         }
     },
-    setup() {
+    emits: ['resetBthClick', 'queryBthClick'],
+    setup(props, { emit }) {
+        // 第一个优化，双向绑定的属性应该有配置文件的field来决定
+        // 1.优化一：formdata中的属性应该动态来改变
+        const formItems = props.searchFormConfig?.formItems ?? []
+        const formOriginData: any = []
+        for (const item of formItems) {
+            formOriginData[item.field] = ''
+        }
+        const formData = ref(formOriginData)
         // reactive进行双向绑定会有一些问题
-        const formData = ref({
-            id: '',
-            name: '',
-            password: '',
-            sport: '',
-            createTime: ''
-        })
-        return { formData }
+        // const formData = ref({
+        //     id: '',
+        //     name: '',
+        //     password: '',
+        //     sport: '',‘
+        //     createTime: ''
+        // })
+        // 优化二：重制按钮,当用户点击
+        const handleRestClick = () => {
+            for (const key in formOriginData) {
+                formData.value[`${key}`] = formOriginData[key]
+            }
+            emit('resetBthClick')
+        }
+
+        // 优化三：当用户点击搜索
+        const handleQueryClick = () => {
+            console.log('点击了搜索')
+            emit('queryBthClick', formData.value)
+        }
+
+        return { formData, handleRestClick, handleQueryClick }
     }
 })
 </script>

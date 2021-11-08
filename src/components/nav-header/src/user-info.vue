@@ -37,7 +37,7 @@ export default defineComponent({
         const stort = useStore()
         const userName = computed(() => stort.state.login.userInfo.name)
         const outLogin = () => {
-            LocalCache.clearCache()
+            LocalCache.deleteCache('token')
             location.reload()
         }
         return { userName, outLogin }

@@ -2,7 +2,12 @@ import { Module } from 'vuex'
 import { IRootState } from '@/store/types'
 import { ISystemState } from './types'
 
-import { getPageListData, deletePageData } from '@/service/main/system/system'
+import {
+    getPageListData,
+    deletePageData,
+    createPageData,
+    editPageData
+} from '@/service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
     // 作用于开启，否则追踪不到子模块
@@ -108,6 +113,42 @@ const systemModule: Module<ISystemState, IRootState> = {
             await deletePageData(pageUrl)
 
             // 3.重新请求最新的数据
+            dispatch('getPageListAction', {
+                pageName,
+                queryInfo: {
+                    offset: 0,
+                    size: 10
+                }
+            })
+        },
+
+        // 新建数据
+        async createPageDataAction({ dispatch }, paload: any) {
+            // 1.创建数据的请求
+            const { pageName, newData } = paload
+            const pageUrl = `/${pageName}`
+            // 调用网络请求
+            await createPageData(pageUrl, newData)
+
+            // 2.重新请求最新的数据
+            dispatch('getPageListAction', {
+                pageName,
+                queryInfo: {
+                    offset: 0,
+                    size: 10
+                }
+            })
+        },
+
+        // 编辑数据
+        async editPageDataAction({ dispatch }, paload: any) {
+            // 1.编辑数据的请求
+            const { pageName, editData, id } = paload
+            const pageUrl = `/${pageName}/${id}`
+
+            await editPageData(pageUrl, editData)
+
+            // 2.重新请求最新的数据
             dispatch('getPageListAction', {
                 pageName,
                 queryInfo: {

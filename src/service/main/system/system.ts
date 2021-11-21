@@ -15,3 +15,19 @@ export function deletePageData(url: string) {
         url: url
     })
 }
+
+// 新建用户
+export function createPageData(url: string, newData: any) {
+    return hyRequest.post<IDataType>({
+        url: url,
+        data: newData
+    })
+}
+
+// 编辑用户
+export function editPageData(url: string, editData: any) {
+    return hyRequest.patch<IDataType>({
+        url: url,
+        data: editData
+    })
+}

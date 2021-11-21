@@ -10,7 +10,8 @@ export function formatUtcString(
     utcString: string,
     format: string = DATE_TIME_FORMAT
 ) {
-    return dayjs.utc(utcString).format(format)
+    // 0时区和东八区的区别得用偏移utcOffset(8)
+    return dayjs.utc(utcString).utcOffset(8).format(format)
 }
 
 // 如果是其它的格式的话，比如时间戳形式

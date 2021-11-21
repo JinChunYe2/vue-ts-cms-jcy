@@ -17,14 +17,16 @@
         <!-- 是ref的时候，命名的时候有个Ref -->
         <page-model
             ref="pageModalRef"
-            :modalConfig="modalConfig"
+            pageName="users"
+            :modalConfig="modalConfigRef"
             :defaultInfo="defaultInfo"
         ></page-model>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import { useStore } from '@/store'
 
 import pageSearch from '@/components/page-search/index'
 import pageContent from '@/components/page-content/index'
@@ -65,6 +67,27 @@ export default defineComponent({
             console.log(passwordItem!.isHidden)
         }
 
+        // 2.动态添加部门和角色列表
+        const store = useStore()
+        const modalConfigRef = computed(() => {
+            const departmentItem = modalConfig.formItems.find(
+                (item) => item.field === 'departmentId'
+            )
+            departmentItem!.options = store.state.entireDepartment.map(
+                (item) => {
+                    return { title: item.name, value: item.id }
+                }
+            )
+            const roleItem = modalConfig.formItems.find(
+                (item) => item.field === 'roleId'
+            )
+            roleItem!.options = store.state.entireRole.map((item) => {
+                return { title: item.name, value: item.id }
+            })
+            return modalConfig
+        })
+
+        // 3.调用hook获取公共变量和函数
         const [pageModalRef, defaultInfo, handleNewClick, handleEditClick] =
             usePageModel(newCallback, editCallback)
         return {
@@ -73,7 +96,7 @@ export default defineComponent({
             pageContentRef,
             handleResetClick,
             handleQueryClick,
-            modalConfig,
+            modalConfigRef,
             pageModalRef,
             defaultInfo,
             handleNewClick,

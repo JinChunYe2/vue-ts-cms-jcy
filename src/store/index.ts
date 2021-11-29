@@ -2,6 +2,7 @@ import { createStore, Store, useStore as useVusexStore } from 'vuex'
 
 import login from './login/login'
 import system from './main/system/system'
+import dashboard from './main/analysis/dashboard'
 
 import { getPageListData } from '@/service/main/system/system'
 
@@ -15,7 +16,8 @@ const store = createStore<IRootState>({
             // 全部部门
             entireDepartment: [],
             // 全部角色
-            entireRole: []
+            entireRole: [],
+            entireMenu: []
         }
     },
     mutations: {
@@ -24,6 +26,9 @@ const store = createStore<IRootState>({
         },
         changeRoleList(state, roleList) {
             state.entireRole = roleList
+        },
+        changeEntireMenu(state, list) {
+            state.entireMenu = list
         }
     },
     getters: {},
@@ -36,6 +41,10 @@ const store = createStore<IRootState>({
             })
             const { list: departmentList } = departmentResult.data
 
+            // 增加权限完整数据
+            const menuResult = await getPageListData('/menu/list', {})
+            const { list: menuList } = menuResult.data
+
             // 2.请求角色数据
             const roleResult = await getPageListData('/role/list', {
                 offset: 0,
@@ -45,14 +54,19 @@ const store = createStore<IRootState>({
             // 3.保存数据
             commit('changeDepartmentList', departmentList)
             commit('changeRoleList', roleList)
+            commit('changeEntireMenu', menuList)
         }
     },
-    modules: { login, system }
+    modules: {
+        login,
+        system,
+        dashboard
+    }
 })
 
 export function setupStore() {
     store.dispatch('login/locdLocalLogin')
-    store.dispatch('getInitialDataAction')
+    // store.dispatch('getInitialDataAction')
 }
 
 export function useStore(): Store<IStoreType> {

@@ -30,15 +30,18 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '@/store'
+import { useRouter } from 'vue-router'
 import LocalCache from '@/utils/cache'
 export default defineComponent({
     components: {},
     setup() {
         const stort = useStore()
         const userName = computed(() => stort.state.login.userInfo.name)
+        const router = useRouter()
         const outLogin = () => {
             LocalCache.deleteCache('token')
-            location.reload()
+            router.push('/main')
+            // location.reload()
         }
         return { userName, outLogin }
     }

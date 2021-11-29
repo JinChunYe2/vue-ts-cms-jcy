@@ -51,13 +51,16 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     getters: {},
     actions: {
-        async accountLoginAction({ commit }, payload: IAccount) {
+        async accountLoginAction({ commit, dispatch }, payload: IAccount) {
             // 1. 实现登录逻辑
             const loginResult = await accountLoginRequest(payload)
             const { id, token } = loginResult.data
             commit('changeToken', token)
             LocalCache.setCache('token', token)
             // console.log(loginResult, id, token)
+
+            // 保证获取到token，发送初始化请求（完整的role/department）
+            dispatch('getInitialDataAction', null, { root: true })
 
             // 2.请求用户信息
             const userInfoResult = await requesUserInfoById(id)
@@ -79,10 +82,12 @@ const loginModule: Module<ILoginState, IRootState> = {
             router.push('/main')
         },
         // 5.如果页面重新进入或刷新的情况下，依旧从本地存储里获取数据
-        locdLocalLogin({ commit }) {
+        locdLocalLogin({ commit, dispatch }) {
             const token = LocalCache.getCache('token')
             if (token) {
                 commit('changeToken', token)
+                // 保证获取到token，发送初始化请求（完整的role/department）
+                dispatch('getInitialDataAction', null, { root: true })
             }
             const userInfo = LocalCache.getCache('userInfo')
             if (userInfo) {

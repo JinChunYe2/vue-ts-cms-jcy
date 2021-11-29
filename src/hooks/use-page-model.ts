@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import pageModel from '@/components/page-modle/index'
 
-type CallbackFn = () => void
+type CallbackFn = (item?: any) => void
 
 export function usePageModel(newCb?: CallbackFn, editCb?: CallbackFn) {
     const pageModalRef = ref<InstanceType<typeof pageModel>>()
@@ -20,7 +20,8 @@ export function usePageModel(newCb?: CallbackFn, editCb?: CallbackFn) {
         if (pageModalRef.value) {
             pageModalRef.value.dialogVisible = true
         }
-        editCb && editCb()
+        console.log('点击了编辑按钮', item)
+        editCb && editCb(item)
     }
     return [pageModalRef, defaultInfo, handleNewClick, handleEditClick]
 }

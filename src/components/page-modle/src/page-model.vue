@@ -8,6 +8,7 @@
             destroy-on-close
         >
             <hy-from v-bind="modalConfig" v-model="formData"></hy-from>
+            <slot></slot>
             <template #footer class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="handleConfirmClick">
@@ -33,6 +34,10 @@ export default defineComponent({
             required: true
         },
         defaultInfo: {
+            type: Object,
+            default: () => ({})
+        },
+        otherInfo: {
             type: Object,
             default: () => ({})
         },
@@ -64,7 +69,7 @@ export default defineComponent({
                 console.log('编辑用户', props.pageName)
                 store.dispatch('system/editPageDataAction', {
                     pageName: props.pageName,
-                    editData: { ...formData.value },
+                    editData: { ...formData.value, ...props.otherInfo },
                     id: props.defaultInfo.id
                 })
             } else {
@@ -72,7 +77,7 @@ export default defineComponent({
                 console.log('新建用户')
                 store.dispatch('system/createPageDataAction', {
                     pageName: props.pageName,
-                    newData: { ...formData.value }
+                    newData: { ...formData.value, ...props.otherInfo }
                 })
             }
         }

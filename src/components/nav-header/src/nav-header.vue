@@ -21,6 +21,9 @@ import { useRoute } from 'vue-router'
 import HyBreadCrumb from '@/base-ui/breadcrumb/index'
 import userInfo from './user-info.vue'
 
+// 引入echarts的hooks
+// import useEchart from '@/base-ui/echart/hooks/useEchart'
+
 import { pathMapBreadcrumbs } from '@/utils/map-menus'
 
 export default defineComponent({
@@ -32,6 +35,8 @@ export default defineComponent({
     setup(props, { emit }) {
         const isFold = ref(false)
         const handleFoldClick = () => {
+            // const { updataSize } = useEchart()
+            // updataSize()
             isFold.value = !isFold.value
             emit('foldChange', isFold.value)
         }

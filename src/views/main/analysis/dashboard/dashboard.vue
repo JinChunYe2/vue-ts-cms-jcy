@@ -1,20 +1,71 @@
 <template>
-    <div class="dashboard"></div>
+    <div class="dashboard">
+        <el-row :gutter="10">
+            <el-col :span="7">
+                <hy-card title="分类商品数量(饼图)">
+                    <pie-echart :pieData="categoryGoodsCount"></pie-echart>
+                </hy-card>
+            </el-col>
+            <el-col :span="10">
+                <hy-card title="不同城市商品销量">
+                    <map-echart :mapData="addressGoodsSale"></map-echart>
+                </hy-card>
+            </el-col>
+            <el-col :span="7">
+                <hy-card title="分类商品数量(玫瑰图)">
+                    <rose-echart :roseData="categoryGoodsCount"></rose-echart>
+                </hy-card>
+            </el-col>
+        </el-row>
+
+        <el-row :gutter="10" class="content-row">
+            <el-col :span="12">
+                <hy-card title="分类商品的销量">
+                    <line-echart v-bind="categoryGoodsSale"></line-echart>
+                </hy-card>
+            </el-col>
+            <el-col :span="12">
+                <hy-card title="分类商品的收藏">
+                    <bar-echart v-bind="categoryGoodsFavor"></bar-echart>
+                </hy-card>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, computed } from 'vue'
 import { useStore } from '@/store'
+import { PieEchart, roseEchart } from '@/components/page-echarts'
+
+import HyCard from '@/base-ui/card/index'
 
 export default defineComponent({
     name: 'dashboard',
+    components: {
+        HyCard,
+        PieEchart,
+        roseEchart
+    },
     setup() {
         const store = useStore()
+
         // 请求数据
         store.dispatch('dashboard/getDashboardDataAction')
-        return {}
+
+        // 获取数据
+        const categoryGoodsCount = computed(() => {
+            return store.state.dashboard.categoryGoodsCount.map((item: any) => {
+                return { name: item.name, value: item.goodsCount }
+            })
+        })
+        return { categoryGoodsCount }
     }
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.content-row {
+    margin-top: 20px;
+}
+</style>

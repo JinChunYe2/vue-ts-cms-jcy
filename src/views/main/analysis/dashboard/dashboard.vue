@@ -36,7 +36,13 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from 'vue'
 import { useStore } from '@/store'
-import { PieEchart, roseEchart } from '@/components/page-echarts'
+import {
+    PieEchart,
+    roseEchart,
+    lineEchart,
+    barEchart,
+    mapEchart
+} from '@/components/page-echarts'
 
 import HyCard from '@/base-ui/card/index'
 
@@ -45,7 +51,10 @@ export default defineComponent({
     components: {
         HyCard,
         PieEchart,
-        roseEchart
+        roseEchart,
+        lineEchart,
+        barEchart,
+        mapEchart
     },
     setup() {
         const store = useStore()
@@ -54,12 +63,35 @@ export default defineComponent({
         store.dispatch('dashboard/getDashboardDataAction')
 
         // 获取数据
+        // 饼图
         const categoryGoodsCount = computed(() => {
             return store.state.dashboard.categoryGoodsCount.map((item: any) => {
                 return { name: item.name, value: item.goodsCount }
             })
         })
-        return { categoryGoodsCount }
+        // 折线图
+        const categoryGoodsSale = computed(() => {
+            const xLabels: string[] = []
+            const values: any[] = []
+            const categoryGoodsSale = store.state.dashboard.categoryGoodsSale
+            for (const item of categoryGoodsSale) {
+                xLabels.push(item.name)
+                values.push(item.goodsCount)
+            }
+            return { xLabels, values }
+        })
+        // 柱形图数据
+        const categoryGoodsFavor = computed(() => {
+            const xLabels: string[] = []
+            const values: any[] = []
+            const categoryGoodsFavor = store.state.dashboard.categoryGoodsFavor
+            for (const item of categoryGoodsFavor) {
+                xLabels.push(item.name)
+                values.push(item.goodsFavor)
+            }
+            return { xLabels, values }
+        })
+        return { categoryGoodsCount, categoryGoodsSale, categoryGoodsFavor }
     }
 })
 </script>

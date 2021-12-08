@@ -1,4 +1,7 @@
 import * as Echarts from 'echarts'
+// 获取中国地图数据
+import chinaMapData from '../data/china.json'
+Echarts.registerMap('china', chinaMapData)
 
 // 封装Echarts的顶级hooks,新添加相关的逻辑很方便
 export default function (el: HTMLElement) {

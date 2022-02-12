@@ -1,7 +1,9 @@
 <template>
     <div class="hy-table">
         <div class="header">
-            <slot name="header">{{ title }}</slot>
+            <slot name="header">
+                <div class="title">{{ title }}</div>
+            </slot>
             <div class="handler">
                 <slot name="headerHandler"></slot>
             </div>

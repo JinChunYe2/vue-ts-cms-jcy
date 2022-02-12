@@ -6,13 +6,14 @@ export interface IFormItem {
     label: string
     rules?: any[]
     placeholder?: any
-    options?: any[]
+    options?: any
     // 针对特殊属性
     otherOptions?: any
     isHidden?: boolean
 }
 
 export interface IForm {
+    title?: string
     formItems: IFormItem[]
     labelWidth?: string
     itemStyle?: any

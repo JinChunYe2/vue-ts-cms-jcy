@@ -84,6 +84,7 @@ export default defineComponent({
             const menuList = [...checkdKeys, ...halfCheckedKeys]
             otherInfo.value = { menuList }
         }
+        console.log(contentTableConfig, 'contentTableConfig')
         return {
             contentTableConfig,
             searchFormConfig,

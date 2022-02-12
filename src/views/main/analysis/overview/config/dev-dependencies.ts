@@ -9,11 +9,6 @@ export const devDependencies: DescriptionProp[] = [
         description: '5'
     },
     {
-        name: 'vite',
-        description: '^2.2.3'
-    },
-
-    {
         name: 'eslint',
         description: '^7.25.0'
     },
@@ -56,10 +51,6 @@ export const devDependencies: DescriptionProp[] = [
     {
         name: '@typescript-eslint/parser',
         description: '^4.22.0'
-    },
-    {
-        name: '@vitejs/plugin-vue',
-        description: '^1.2.2'
     },
     {
         name: '@vue/compiler-sfc',
@@ -106,15 +97,7 @@ export const devDependencies: DescriptionProp[] = [
         description: '^4.1.0'
     },
     {
-        name: 'vite-plugin-mock',
-        description: '^2.5.0'
-    },
-    {
         name: 'vue-tsc',
         description: '^0.0.8'
     }
-    // {
-    //   name: 'xxxx',
-    //   description: 'xxxx'
-    // }
 ]

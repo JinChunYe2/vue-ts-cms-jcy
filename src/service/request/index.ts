@@ -32,25 +32,25 @@ class HYRequest {
             this.interceptors?.responseInterceptorCatch
         )
 
-        // 2.添加所有的实例都有的拦截器
-        this.instance.interceptors.request.use(
-            (config) => {
-                // console.log('所有的实例都有的拦截器: 请求成功拦截')
+        // 2.添加所有的实例都有的拦截器,注释的原因是因为后面要加防抖，否则会出现请求频闪
+        // this.instance.interceptors.request.use(
+        //     (config) => {
+        //         // console.log('所有的实例都有的拦截器: 请求成功拦截')
 
-                if (this.showLoading) {
-                    this.loading = ElLoading.service({
-                        lock: true,
-                        text: '正在请求数据....',
-                        background: 'rgba(0, 0, 0, 0.5)'
-                    })
-                }
-                return config
-            },
-            (err) => {
-                // console.log('所有的实例都有的拦截器: 请求失败拦截')
-                return err
-            }
-        )
+        //         if (this.showLoading) {
+        //             this.loading = ElLoading.service({
+        //                 lock: true,
+        //                 text: '正在请求数据....',
+        //                 background: 'rgba(0, 0, 0, 0.5)'
+        //             })
+        //         }
+        //         return config
+        //     },
+        //     (err) => {
+        //         // console.log('所有的实例都有的拦截器: 请求失败拦截')
+        //         return err
+        //     }
+        // )
 
         this.instance.interceptors.response.use(
             (res) => {

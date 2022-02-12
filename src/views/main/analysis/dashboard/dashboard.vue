@@ -1,5 +1,15 @@
 <template>
     <div class="dashboard">
+        <!-- 1.顶部数据统计 -->
+        <el-row :gutter="10">
+            <template v-for="item in topPanelData" :key="item.title">
+                <el-col :md="12" :lg="6" :xl="6">
+                    <statistical-panel :panelData="item" />
+                </el-col>
+            </template>
+        </el-row>
+
+        <!-- 2.中间图表 -->
         <el-row :gutter="10">
             <el-col :span="7">
                 <hy-card title="分类商品数量(饼图)">
@@ -18,6 +28,7 @@
             </el-col>
         </el-row>
 
+        <!-- 3.底部图表 -->
         <el-row :gutter="10" class="content-row">
             <el-col :span="12">
                 <hy-card title="分类商品的销量">
@@ -36,6 +47,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from 'vue'
 import { useStore } from '@/store'
+
 import {
     PieEchart,
     roseEchart,
@@ -46,10 +58,13 @@ import {
 
 import HyCard from '@/base-ui/card/index'
 
+import StatisticalPanel from '@/components/statistical-panel'
+
 export default defineComponent({
     name: 'dashboard',
     components: {
         HyCard,
+        StatisticalPanel,
         PieEchart,
         roseEchart,
         lineEchart,
@@ -57,12 +72,14 @@ export default defineComponent({
         mapEchart
     },
     setup() {
+        // 1.发起数据统计的网络请求
         const store = useStore()
-
-        // 请求数据
         store.dispatch('dashboard/getDashboardDataAction')
 
-        // 获取数据
+        // 2.获取顶部PanelData
+        const topPanelData = computed(() => store.state.dashboard.topPanelDatas)
+
+        // 3.获取图表的数据
         // 饼图
         const categoryGoodsCount = computed(() => {
             return store.state.dashboard.categoryGoodsCount.map((item: any) => {
@@ -91,13 +108,28 @@ export default defineComponent({
             }
             return { xLabels, values }
         })
-        return { categoryGoodsCount, categoryGoodsSale, categoryGoodsFavor }
+
+        const addressGoodsSale = computed(() => {
+            return store.state.dashboard.addressGoodsSale.map((item: any) => {
+                return { name: item.address, value: item.count }
+            })
+        })
+        return {
+            topPanelData,
+            categoryGoodsCount,
+            categoryGoodsSale,
+            categoryGoodsFavor,
+            addressGoodsSale
+        }
     }
 })
 </script>
 
-<style scoped>
-.content-row {
-    margin-top: 20px;
+<style scoped lang="less">
+.dashboard {
+    background-color: #f5f5f5;
+    .row {
+        margin-top: 20px;
+    }
 }
 </style>

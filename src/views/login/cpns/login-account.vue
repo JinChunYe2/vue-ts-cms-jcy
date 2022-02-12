@@ -7,10 +7,17 @@
             ref="formRef"
         >
             <el-form-item label="账号" prop="name">
-                <el-input v-model="account.name"></el-input>
+                <el-input
+                    placeholder="游客账号：coderwhy"
+                    v-model="account.name"
+                ></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-                <el-input v-model="account.password" show-password></el-input>
+                <el-input
+                    placeholder="游客密码：123456"
+                    v-model="account.password"
+                    show-password
+                ></el-input>
             </el-form-item>
         </el-form>
     </div>

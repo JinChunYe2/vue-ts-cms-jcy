@@ -6,7 +6,9 @@ import {
     getCategoryGoodsCount,
     getCategoryGoodsSale,
     getCategoryGoodsFavor,
-    getAddressGoodsSale
+    getAddressGoodsSale,
+    getGoodsSaleTop10,
+    getAmountList
 } from '@/service/main/analysis/dashboard'
 
 const dashboarModule: Module<IDashboardState, IRootState> = {
@@ -17,7 +19,8 @@ const dashboarModule: Module<IDashboardState, IRootState> = {
             categoryGoodsCount: [],
             categoryGoodsSale: [],
             categoryGoodsFavor: [],
-            addressGoodsSale: []
+            addressGoodsSale: [],
+            topPanelDatas: []
         }
     },
     mutations: {
@@ -32,6 +35,9 @@ const dashboarModule: Module<IDashboardState, IRootState> = {
         },
         changeAddressGoodsSale(state, list) {
             state.addressGoodsSale = list
+        },
+        changeTopPanelDatas(state, list) {
+            state.topPanelDatas = list
         }
     },
     getters: {},
@@ -45,6 +51,10 @@ const dashboarModule: Module<IDashboardState, IRootState> = {
             commit('changeCategoryGoodsFavor', categoryFavorResult.data)
             const addressGoodsResult = await getAddressGoodsSale()
             commit('changeAddressGoodsSale', addressGoodsResult.data)
+
+            // 获取顶部计数器的数值
+            const resultTopPanelDatas = await getAmountList()
+            commit('changeTopPanelDatas', resultTopPanelDatas.data)
         }
     },
     modules: {}

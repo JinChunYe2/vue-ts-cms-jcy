@@ -2,7 +2,7 @@
     <div class="nav-menu">
         <div class="logo">
             <img class="img" src="~@/assets/image/logo.svg" alt="logo" />
-            <span v-if="!isCollapse" class="title">Vue3 + TS</span>
+            <span v-if="!isCollapse" class="title">SHOPPING-CMS</span>
         </div>
         <el-menu
             :default-active="defaultValue"
